@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Number Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      font-size: 18px;
+    }
+    .hidden {
+      display: none;
+    }
+    input {
+      padding: 10px;
+      width: 200px;
+      text-align: center;
+      font-size: 18px;
+      border: 2px solid #888;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #message {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Guess the Number!</h1>
+  <p>I'm thinking of a number between 1 and 50. Can you guess it?</p>
+  <input type="number" id="guessInput" placeholder="Type your guess here..." min="1" max="50" autocomplete="off">
+  <button id="guessButton" type="button">Submit Guess</button>
+  <p id="message"></p>
+  <button id="restartButton" class="hidden">Play Again</button>
+
+  <script>
+    // Generate a random number between 1 and 50
+    let randomNumber = Math.floor(Math.random() * 50) + 1;
+
+    const guessInput = document.getElementById('guessInput');
+    const guessButton = document.getElementById('guessButton');
+    const message = document.getElementById('message');
+    const restartButton = document.getElementById('restartButton');
+
+    // Function to handle guesses
+    const handleGuess = () => {
+      const userGuess = parseInt(guessInput.value);
+
+      if (isNaN(userGuess) || userGuess < 1 || userGuess > 50) {
+        message.textContent = 'Please enter a valid number between 1 and 50.';
+        return;
+      }
+
+      if (userGuess === randomNumber) {
+        message.textContent = `🎉 Congrats! ${randomNumber} was the correct number!`;
+        restartButton.classList.remove('hidden');
+        guessButton.disabled = true;
+      } else if (userGuess < randomNumber) {
+        message.textContent = 'Too low! Try again.';
+      } else {
+        message.textContent = 'Too high! Try again.';
+      }
+    };
+
+    // Handle click event on the "Submit Guess" button
+    guessButton.addEventListener('click', handleGuess);
+
+    // Handle "Enter" key press in the input field
+    guessInput.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        handleGuess();
+      }
+    });
+
+    // Reset the game
+    restartButton.addEventListener('click', () => {
+      randomNumber = Math.floor(Math.random() * 50) + 1; // Reset random number
+      message.textContent = '';
+      guessInput.value = '';
+      guessButton.disabled = false;
+      restartButton.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
