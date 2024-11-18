@@ -50,7 +50,6 @@
   <button id="restartButton" class="hidden">Play Again</button>
 
   <script>
-    // Generate a random number between 1 and 50
     let randomNumber = Math.floor(Math.random() * 50) + 1;
 
     const guessInput = document.getElementById('guessInput');
@@ -58,9 +57,9 @@
     const message = document.getElementById('message');
     const restartButton = document.getElementById('restartButton');
 
-    // Function to handle guesses
     const handleGuess = () => {
       const userGuess = parseInt(guessInput.value);
+      attempts++;
 
       if (isNaN(userGuess) || userGuess < 1 || userGuess > 50) {
         message.textContent = 'Please enter a valid number between 1 and 50.';
@@ -77,20 +76,37 @@
         message.textContent = 'Too high! Try again.';
       }
     };
-
-    // Handle click event on the "Submit Guess" button
+   const assignPersonalityTrait = (attempts) => {
+      if (attempts === 1) {
+        return "Perfectionist: You guessed it on the first try? Is there anything you can’t do perfectly?";
+      } else if (attempts <= 3) {
+        return "Adventurer: You’re like Indiana Jones! You found the number, but you had to dodge a few traps along the way!";
+      } else if (attempts <= 5) {
+        return "Patient: You’re as calm as a monk. You’ll get there… eventually. The number appreciates your zen-like patience.";
+      } else if (attempts <= 7) {
+        return "Optimistic: You’ve got the heart of a dreamer. Sure, you guessed wrong 10 times, but *this* time, you’re feeling lucky!";
+      } else if (attempts <= 10) {
+        return "Overachiever: You didn’t just guess the number… you almost guessed it *too* many times. You overachieved, and that’s a win in itself!";
+      } else if (attempts <= 12) {
+        return "Mad Scientist: You’ve been trying different numbers like you’re conducting an experiment. Almost there, Einstein!";
+      } else if (attempts <= 15) {
+        return "Wildcard: Your guesses are as unpredictable as a mystery box! Who knows what’s inside that head of yours?";
+      } else {
+        return "Hero: You may have failed a few times, but in the end, you’re the hero we all needed. It’s not about the journey, it’s about the triumph!";
+      }
+    };
+    
     guessButton.addEventListener('click', handleGuess);
 
-    // Handle "Enter" key press in the input field
     guessInput.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
         handleGuess();
       }
     });
 
-    // Reset the game
     restartButton.addEventListener('click', () => {
       randomNumber = Math.floor(Math.random() * 50) + 1; // Reset random number
+      attempts = 0:
       message.textContent = '';
       guessInput.value = '';
       guessButton.disabled = false;
