@@ -51,6 +51,7 @@
 
   <script>
     let randomNumber = Math.floor(Math.random() * 50) + 1;
+    let attempts = 0; // Track the number of attempts
 
     const guessInput = document.getElementById('guessInput');
     const guessButton = document.getElementById('guessButton');
@@ -59,7 +60,7 @@
 
     const handleGuess = () => {
       const userGuess = parseInt(guessInput.value);
-      attempts++;
+      attempts++; // Increment the number of attempts
 
       if (isNaN(userGuess) || userGuess < 1 || userGuess > 50) {
         message.textContent = 'Please enter a valid number between 1 and 50.';
@@ -68,6 +69,8 @@
 
       if (userGuess === randomNumber) {
         message.textContent = `🎉 Congrats! ${randomNumber} was the correct number!`;
+        const personality = assignPersonalityTrait(attempts);
+        message.textContent += ` You're a ${personality}!`;
         restartButton.classList.remove('hidden');
         guessButton.disabled = true;
       } else if (userGuess < randomNumber) {
@@ -76,7 +79,8 @@
         message.textContent = 'Too high! Try again.';
       }
     };
-   const assignPersonalityTrait = (attempts) => {
+
+    const assignPersonalityTrait = (attempts) => {
       if (attempts === 1) {
         return "Perfectionist: You guessed it on the first try? Is there anything you can’t do perfectly?";
       } else if (attempts <= 3) {
@@ -95,7 +99,7 @@
         return "Hero: You may have failed a few times, but in the end, you’re the hero we all needed. It’s not about the journey, it’s about the triumph!";
       }
     };
-    
+
     guessButton.addEventListener('click', handleGuess);
 
     guessInput.addEventListener('keypress', (event) => {
@@ -104,9 +108,10 @@
       }
     });
 
+    
     restartButton.addEventListener('click', () => {
       randomNumber = Math.floor(Math.random() * 50) + 1; // Reset random number
-      attempts = 0:
+      attempts = 0; // Reset the attempts count
       message.textContent = '';
       guessInput.value = '';
       guessButton.disabled = false;
